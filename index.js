@@ -9,6 +9,9 @@ app.get("/", (req, res) => {
   res.status(200).json({ message: "Works!" });
 });
 
+//Rutas para spotify
+app.use("/spotify", require("./src/spotify"));
+
 const server = app.listen(port, () => {
   console.log("Escuchando en el puerto " + port);
 });
