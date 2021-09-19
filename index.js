@@ -6,7 +6,15 @@ const port = process.env.PORT || 20202; //Puerto donde abriremos el servicio
 
 //Ruta GET / para saber si el servicio está corriendo
 app.get("/", (req, res) => {
-  res.status(200).json({ message: "Works!" });
+  res.status(200).json({
+    message: "¡Hola! Esta es mi API REST para obtener información sobre mi :)",
+    rutas: [
+      {
+        url: "/spotify",
+        info: "Información sobre mi Spotify :)",
+      },
+    ],
+  });
 });
 
 //Rutas para spotify
