@@ -9,6 +9,7 @@ class Spotify {
   constructor() {
     this.API_URL = "https://api.spotify.com/v1";
     this.BASIC_AUTH = credentials.spotify.basic;
+    this.tokenExpires = 0; //¿Cuando expirará el token que tenemos? Sino para generar otro
   }
 
   /**
@@ -17,6 +18,12 @@ class Spotify {
    */
   async refreshToken() {
     return new Promise((resolve, reject) => {
+      //Primero verificamos que el token que generamos previamente sea vigente, sino generamos otro
+      if (Date.now() < this.tokenExpires) {
+        resolve(this.access_token);
+        return;
+      }
+
       const data = {
         grant_type: "refresh_token",
         refresh_token: credentials.spotify.refresh_token,
@@ -33,6 +40,8 @@ class Spotify {
         .then(({ data }) => {
           if (data.access_token) {
             this.access_token = data.access_token;
+            this.tokenExpires =
+              (Number(data.expires_in) - 10) * 1000 + Date.now();
             resolve(data.access_token);
           }
         })
@@ -42,6 +51,10 @@ class Spotify {
     });
   }
 
+  /**
+   * Función que nos dirá que canción está escuchando Rodriguito
+   * @returns Retornará un objeto con la información
+   */
   async getCurrentTrack() {
     return new Promise((resolve, reject) => {
       axios({
@@ -52,7 +65,6 @@ class Spotify {
         },
       })
         .then(({ data }) => {
-          console.log(data);
           //Si la respuesta no contiene la información del track...
           if (!data.item) reject("No se pudo recuperar el current track");
 
