@@ -41,6 +41,51 @@ class Spotify {
         });
     });
   }
+
+  async getCurrentTrack() {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: "GET",
+        url: this.API_URL + "/me/player/currently-playing",
+        headers: {
+          Authorization: "Bearer " + this.access_token,
+        },
+      })
+        .then(({ data }) => {
+          console.log(data);
+          //Si la respuesta no contiene la información del track...
+          if (!data.item) reject("No se pudo recuperar el current track");
+
+          const progress = data.progress_ms; //En qué segundo va la canción
+          const isPlaying = data.is_playing; //¿Está reproduciendo?
+
+          const item = data.item;
+          const duration = item.duration_ms; //Duración de la canción
+          const urlCancion = item.external_urls.spotify; //URL para compartir
+          const id = item.id; //ID de la canción
+          const name = item.name; //Nombre de la canción
+          const artista = item.artists[0].name; //Solo mostrar el primer artista
+          const image = item.album.images[0];
+
+          //Preparamos el objeto de respuesta
+          const respuesta = {
+            progress: progress,
+            is_playing: isPlaying,
+            duration: duration,
+            url: urlCancion,
+            id: id,
+            name: name,
+            artista: artista,
+            image: image,
+          };
+
+          resolve(respuesta);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
 }
 
 module.exports = { Spotify };
