@@ -17,7 +17,6 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/current-track", async (req, res) => {
-  await sp.refreshToken();
   const track = await sp.getCurrentTrack();
 
   res.status(200).json(track);

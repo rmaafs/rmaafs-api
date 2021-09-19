@@ -56,6 +56,7 @@ class Spotify {
    * @returns Retornará un objeto con la información
    */
   async getCurrentTrack() {
+    await this.refreshToken();
     return new Promise((resolve, reject) => {
       axios({
         method: "GET",
