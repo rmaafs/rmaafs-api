@@ -145,6 +145,49 @@ class Spotify {
         });
     });
   }
+
+  async searchTrack(search) {
+    await this.refreshToken();
+    return new Promise((resolve, reject) => {
+      axios({
+        method: "GET",
+        url: this.API_URL + "/search?type=track&limit=1&q=" + search,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.access_token,
+        },
+      })
+        .then(({ data }) => {
+          if (data.tracks) {
+            const item = data.tracks.items[0];
+            const duration = item.duration_ms; //Duración de la canción
+            const urlCancion = item.external_urls.spotify; //URL para compartir
+            const id = item.id; //ID de la canción
+            const name = item.name; //Nombre de la canción
+            const artista = item.artists[0].name; //Solo mostrar el primer artista
+            const image = item.album.images[0];
+
+            //Preparamos el objeto de respuesta
+            const respuesta = {
+              duration: duration,
+              url: urlCancion,
+              id: id,
+              name: name,
+              artista: artista,
+              image: image,
+            };
+
+            resolve(respuesta);
+          } else {
+            resolve({ error: "No se encontró la canción" });
+          }
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
 }
 
 module.exports = { Spotify };
