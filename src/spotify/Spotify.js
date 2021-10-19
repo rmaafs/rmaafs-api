@@ -10,6 +10,7 @@ class Spotify {
     this.API_URL = "https://api.spotify.com/v1";
     this.BASIC_AUTH = credentials.spotify.basic;
     this.tokenExpires = 0; //¿Cuando expirará el token que tenemos? Sino para generar otro
+    this.queued = {};
   }
 
   /**
@@ -93,6 +94,51 @@ class Spotify {
           };
 
           resolve(respuesta);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  /**
+   * Función que añadirá una canción a la lista de reproducción
+   * @param {string} idTrack ID del track a añadir
+   * @param {string} ip IP del usuario
+   * @returns Retornará un objeto con la información
+   */
+  async addQueueTrack(idTrack, ip) {
+    await this.refreshToken();
+    return new Promise((resolve, reject) => {
+      const fecha = new Date().toISOString().slice(0, 10);
+
+      //Verificamos si el día sigue siendo el mismo
+      if (!this.queued[fecha]) {
+        this.queued = {}; //Limpiar RAM ya que cambió de día
+        this.queued[fecha] = [];
+      }
+
+      //Si una IP ya ha solicitado poner una canción
+      if (this.queued[fecha].includes(ip)) {
+        resolve({ error: "Sólo puedes añadir 1 canción por día." });
+        return;
+      }
+
+      axios({
+        method: "POST",
+        url: this.API_URL + "/me/player/queue?uri=spotify%3Atrack%3A" + idTrack,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.access_token,
+        },
+      })
+        .then(({ data }) => {
+          if (data === "") {
+            this.queued[fecha].push(ip);
+            resolve({ status: "ok" });
+          }
+          resolve({ error: "No se pudo añadir la canción." });
         })
         .catch((err) => {
           reject(err);

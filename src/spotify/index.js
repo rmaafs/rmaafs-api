@@ -12,6 +12,14 @@ router.get("/", async (req, res) => {
         url: "/current-track",
         info: "Obtener cual canción estoy reproduciendo ahora mismo",
       },
+      {
+        url: "/queue",
+        info: "Añadir una canción a mi lista de espera",
+        format: "json",
+        params: {
+          track: "ID de Spotify de la canción",
+        },
+      },
     ],
   });
 });
@@ -20,6 +28,14 @@ router.get("/current-track", async (req, res) => {
   const track = await sp.getCurrentTrack();
 
   res.status(200).json(track);
+});
+
+router.post("/queue", async (req, res) => {
+  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+  const idTrack = req.body.track;
+  const response = await sp.addQueueTrack(idTrack, ip);
+
+  res.status(200).json(response);
 });
 
 module.exports = router;
