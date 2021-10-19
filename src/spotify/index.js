@@ -47,6 +47,8 @@ router.get("/search", async (req, res) => {
 router.post("/queue", async (req, res) => {
   const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
   const idTrack = req.body.track;
+  console.log(ip, "recomendó", idTrack);
+
   const response = await sp.addQueueTrack(idTrack, ip);
 
   res.status(200).json(response);
