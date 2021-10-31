@@ -20,6 +20,9 @@ app.get("/", (req, res) => {
 //Rutas para spotify
 app.use("/spotify", require("./src/spotify"));
 
+//Rutas para controlar mi foco
+app.use("/foco", require("./src/tuya/foco"));
+
 const server = app.listen(port, () => {
   console.log("Escuchando en el puerto " + port);
 });
