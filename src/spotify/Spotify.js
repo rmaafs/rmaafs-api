@@ -1,6 +1,7 @@
 const axios = require("axios");
 const url = require("url");
 import credentials from "../../credentials.json";
+import PushAndroid from "../push/android/PushAndroid";
 
 /**
  * Clase para la conexión a spotify
@@ -136,6 +137,10 @@ class Spotify {
         .then(({ data }) => {
           if (data === "") {
             this.queued[fecha].push(ip);
+            new PushAndroid().enviar(
+              "Canción recomendada",
+              idTrack + ": " + ip
+            );
             resolve({ status: "ok" });
           }
           resolve({ error: "No se pudo añadir la canción." });
