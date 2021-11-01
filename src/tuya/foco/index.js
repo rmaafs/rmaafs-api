@@ -10,6 +10,43 @@ let foco = new Foco(() => {});
 router.get("/", async (req, res) => {
   res.status(200).json({
     mensaje: "Esta es mi API REST para controlar mis los dispositivos IoT :)",
+    rutas: [
+      {
+        url: "/status",
+        info: "Obtener el estatus del dispositivo.",
+        method: "GET",
+      },
+      {
+        url: "/switch",
+        info: "Prender o apagar el dispositivo según su estado actual.",
+        method: "GET",
+      },
+      {
+        url: "/calido",
+        info: "Poner el foco en cálido, esto porque al cambiarle el color, se ve diferente el color.",
+        method: "GET",
+      },
+      {
+        url: "/turn",
+        info: "Prender o apagar manualmente el dispositivo.",
+        format: "json",
+        method: "POST",
+        params: {
+          value: "true | false",
+        },
+      },
+      {
+        url: "/color",
+        info: "Cambiar el color del foco en RGB.",
+        format: "json",
+        method: "POST",
+        params: {
+          r: "r",
+          g: "g",
+          b: "b",
+        },
+      },
+    ],
   });
 });
 
