@@ -21,6 +21,10 @@ app.get("/", (req, res) => {
         url: "/enchufe",
         info: "Controlar el enchufe WiFi de mi cuarto.",
       },
+      {
+        url: "/push",
+        info: "Mandar notificaciones push en tiempo real a mi celular.",
+      },
     ],
   });
 });
@@ -33,6 +37,9 @@ app.use("/foco", require("./src/tuya/foco"));
 
 //Rutas para controlar mi enchufe
 app.use("/enchufe", require("./src/tuya/enchufe"));
+
+//Rutas para mandar mensajes PUSH a mi celular
+app.use("/push", require("./src/push/android"));
 
 app.listen(port, () => {
   console.log("Escuchando en el puerto " + port);
