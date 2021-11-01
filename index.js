@@ -11,7 +11,15 @@ app.get("/", (req, res) => {
     rutas: [
       {
         url: "/spotify",
-        info: "Información sobre mi Spotify :)",
+        info: "Información sobre mi Spotify.",
+      },
+      {
+        url: "/foco",
+        info: "Controlar el foco WiFi de mi cuarto.",
+      },
+      {
+        url: "/enchufe",
+        info: "Controlar el enchufe WiFi de mi cuarto.",
       },
     ],
   });
