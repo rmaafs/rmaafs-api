@@ -45,7 +45,11 @@ router.get("/search", async (req, res) => {
 });
 
 router.post("/queue", async (req, res) => {
-  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+  let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+  //CludFlare protege la IP, y adjunta la IP original con otra diferente.
+  if (ip.includes(",")) {
+    ip = ip.split(",")[0];
+  }
   const idTrack = req.body.track;
   console.log(ip, "recomendó", idTrack);
 
