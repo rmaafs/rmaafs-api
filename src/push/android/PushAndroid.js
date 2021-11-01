@@ -1,12 +1,13 @@
 import fetch from "node-fetch";
+import credenciales from "../../../credentials.json";
 
 /**
  * Clase para enviar push notifications a un celular usando FCM
  */
 export default class PushAndroid {
   constructor(severToken, token) {
-    this.severToken = severToken;
-    this.token = token;
+    this.severToken = severToken || credenciales.push.android.server_token;
+    this.token = token || credenciales.push.android.token;
   }
 
   /**

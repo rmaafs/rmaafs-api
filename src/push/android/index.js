@@ -2,10 +2,8 @@ import express from "express";
 import credenciales from "../../../credentials.json";
 import PushAndroid from "./PushAndroid";
 
-const SERVER_TOKEN = credenciales.push.android.server_token;
-const TOKEN = credenciales.push.android.token;
 const SECRET = credenciales.push.android.secret;
-const pushAndroid = new PushAndroid(SERVER_TOKEN, TOKEN);
+const pushAndroid = new PushAndroid();
 
 const router = express.Router();
 
