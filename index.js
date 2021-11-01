@@ -34,6 +34,6 @@ app.use("/foco", require("./src/tuya/foco"));
 //Rutas para controlar mi enchufe
 app.use("/enchufe", require("./src/tuya/enchufe"));
 
-const server = app.listen(port, () => {
+app.listen(port, () => {
   console.log("Escuchando en el puerto " + port);
 });
