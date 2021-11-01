@@ -10,6 +10,27 @@ const enchufe = new Enchufe(() => {});
 router.get("/", async (req, res) => {
   res.status(200).json({
     mensaje: "Esta es mi API REST para controlar mis los dispositivos IoT :)",
+    rutas: [
+      {
+        url: "/status",
+        info: "Obtener el estatus del dispositivo.",
+        method: "GET",
+      },
+      {
+        url: "/switch",
+        info: "Prender o apagar el dispositivo según su estado actual.",
+        method: "GET",
+      },
+      {
+        url: "/turn",
+        info: "Prender o apagar manualmente el dispositivo.",
+        format: "json",
+        method: "POST",
+        params: {
+          value: "true | false",
+        },
+      },
+    ],
   });
 });
 
