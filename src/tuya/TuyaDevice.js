@@ -15,6 +15,7 @@ export default class TuyaDevice {
     this.generateToken(readyCallback);
     this.easy_sign = "";
     this.access_token = "";
+    this.tokenExpires = 0;
   }
 
   /**
@@ -44,6 +45,11 @@ export default class TuyaDevice {
    * @returns Retornará la respuesta en formato JSON
    */
   async sendRequest(url, method, data) {
+    //Primero verificamos que el token que generamos previamente sea vigente, sino generamos otro
+    if (Date.now() > this.tokenExpires) {
+      await this.generateToken(() => {});
+    }
+
     let timestamp = Date.now();
     this.generateSign(true, timestamp);
 
@@ -82,6 +88,8 @@ export default class TuyaDevice {
       .then((json) => {
         if (json.result.access_token) {
           this.access_token = json.result.access_token;
+          this.tokenExpires =
+            (Number(json.result.expire_time) - 10) * 1000 + Date.now();
         }
         readyCallback();
       })
