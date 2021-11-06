@@ -70,5 +70,5 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: rmaafs/rmaafs-api:last-development
+          tags: rmaafs/rmaafs-api:latest
           #tags: rmaafs/rmaafs-api:${{ steps.get_version.outputs.VERSION }}
