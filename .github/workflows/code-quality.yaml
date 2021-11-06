@@ -1,4 +1,4 @@
-name: Code Quality
+name: 🚀 CI & CD.
 on:
   pull_request:
     branches:
@@ -7,12 +7,12 @@ on:
     branches:
       - master
 jobs:
-  build-and-deploy:
+  code-quality:
+    name: "🔆 Code Quality"
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [12.x]
-
     steps:
       - name: 🔽 Descargar proyecto
         uses: actions/checkout@v2
@@ -41,3 +41,32 @@ jobs:
           echo "Se revisará la calidad del código para que la consola no tenga warnings ni errores."
           echo "Se validará que no existan variables sin usar, console.logs, malos estándares de código, etc."
           npm run lint
+
+  docker-push:
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    name: "📦 Docker build & push"
+    needs: code-quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: 👷‍♂️ Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: 👷‍♂️ Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: 🔍 Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: 🏷 Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+      - name: ☁ Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: rmaafs/rmaafs-api:${{ steps.get_version.outputs.VERSION }}

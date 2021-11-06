@@ -1,0 +1,7 @@
+version: "3"
+services:
+  app:
+    image: rmaafs/rmaafs-api:latest
+    ports:
+      - "20202:20202"
+    env_file: /root/.env/rmaafs-api/secrets.env

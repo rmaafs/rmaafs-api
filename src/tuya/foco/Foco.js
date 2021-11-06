@@ -1,9 +1,8 @@
-import credentials from "../../../credentials.json";
 import TuyaDevice from "../TuyaDevice";
 
-const DEVICE_ID = credentials.tuya.foco.DEVICE_ID;
-const CLIENT_ID = credentials.tuya.foco.CLIENT_ID;
-const SECRET = credentials.tuya.foco.SECRET;
+const DEVICE_ID = process.env.TUYA_FOCO_ID;
+const CLIENT_ID = process.env.TUYA_CLIENT_ID;
+const SECRET = process.env.TUYA_SECRET;
 
 /**
  * Clase para controlar el foco

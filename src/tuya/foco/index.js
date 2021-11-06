@@ -1,8 +1,7 @@
 import express from "express";
 import Foco from "./Foco";
-import credenciales from "../../../credentials.json";
 
-const SECRET = credenciales.tuya.foco.SECRET;
+const SECRET = process.env.TUYA_SECRET;
 const router = express.Router();
 
 let foco = new Foco(() => {});
