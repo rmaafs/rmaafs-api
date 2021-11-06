@@ -4,12 +4,14 @@ También lo uso para interactuar con mis dispositivos WiFi (IoT).
 
 ---
 
-### Instalación
+### Docker
 
-- Ejecutar `npm i` para instalar las dependencias.
+- Sólo si tienes instalado Docker y Docker Compose.
+- Ejecutar `docker-compose up -d`
 
 ---
 
-### Ejecución
+### Instalación y ejecución manual
 
-- Ejecutar `npm start`
+- Ejecutar `npm i` para instalar las dependencias.
+- Iniciar proyecto ejecutando `npm start`
