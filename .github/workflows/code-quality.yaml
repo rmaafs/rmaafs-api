@@ -1,4 +1,4 @@
-name: 🚀 CI & CD
+name: 🚀 CI & CD.
 on:
   pull_request:
     branches:
@@ -9,12 +9,10 @@ on:
 jobs:
   code-quality:
     name: "🔆 Code Quality"
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [12.x]
-
     steps:
       - name: 🔽 Descargar proyecto
         uses: actions/checkout@v2
@@ -47,7 +45,6 @@ jobs:
   docker-push:
     name: "📦 Docker build & push"
     needs: code-quality
-
     runs-on: ubuntu-latest
     steps:
       - name: 👷‍♂️ Set up QEMU
