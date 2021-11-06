@@ -1,7 +1,9 @@
 const axios = require("axios");
 const url = require("url");
-import credentials from "../../credentials.json";
 import PushAndroid from "../push/android/PushAndroid";
+
+const BASIC = process.env.SPOTIFY_BASIC;
+const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
 
 /**
  * Clase para la conexión a spotify
@@ -9,7 +11,7 @@ import PushAndroid from "../push/android/PushAndroid";
 class Spotify {
   constructor() {
     this.API_URL = "https://api.spotify.com/v1";
-    this.BASIC_AUTH = credentials.spotify.basic;
+    this.BASIC_AUTH = BASIC;
     this.tokenExpires = 0; //¿Cuando expirará el token que tenemos? Sino para generar otro
     this.queued = {};
   }
@@ -28,14 +30,14 @@ class Spotify {
 
       const data = {
         grant_type: "refresh_token",
-        refresh_token: credentials.spotify.refresh_token,
+        refresh_token: REFRESH_TOKEN,
       };
 
       axios({
         method: "POST",
         url: "https://accounts.spotify.com/api/token",
         headers: {
-          Authorization: "Basic " + credentials.spotify.basic,
+          Authorization: "Basic " + BASIC,
         },
         data: new url.URLSearchParams(data).toString(),
       })

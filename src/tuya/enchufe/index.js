@@ -1,8 +1,7 @@
 import express from "express";
-import credenciales from "../../../credentials.json";
 import Enchufe from "./Enchufe";
 
-const SECRET = credenciales.tuya.enchufe.SECRET;
+const SECRET = process.env.TUYA_SECRET;
 const router = express.Router();
 
 const enchufe = new Enchufe(() => {});

@@ -1,9 +1,8 @@
 import TuyaDevice from "../TuyaDevice";
-import credentials from "../../../credentials.json";
 
-const DEVICE_ID = credentials.tuya.enchufe.DEVICE_ID;
-const CLIENT_ID = credentials.tuya.enchufe.CLIENT_ID;
-const SECRET = credentials.tuya.enchufe.SECRET;
+const DEVICE_ID = process.env.TUYA_ENCHUFE_ID;
+const CLIENT_ID = process.env.TUYA_CLIENT_ID;
+const SECRET = process.env.TUYA_SECRET;
 
 export default class Enchufe extends TuyaDevice {
   constructor(readyCallback) {
