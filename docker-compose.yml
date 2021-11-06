@@ -1,0 +1,7 @@
+version: "3"
+services:
+  api:
+    image: rmaafs-api
+    ports:
+      - "2570:20202"
+    env_file: /root/.env/rmaafs-api/secrets.env
