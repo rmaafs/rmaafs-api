@@ -62,7 +62,7 @@ jobs:
 
       - name: 🏷 Get the version
         id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
 
       - name: ☁ Build and push
         id: docker_build
