@@ -1,8 +1,7 @@
 import express from "express";
-import credenciales from "../../../credentials.json";
 import PushAndroid from "./PushAndroid";
 
-const SECRET = credenciales.push.android.secret;
+const SECRET = process.env.PUSH_SECRET;
 const pushAndroid = new PushAndroid();
 
 const router = express.Router();
