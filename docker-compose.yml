@@ -5,3 +5,4 @@ services:
     ports:
       - "20202:20202"
     env_file: /root/.env/rmaafs-api/secrets.env
+    restart: always
