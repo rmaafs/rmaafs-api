@@ -8,6 +8,8 @@ require("dotenv").config({
 const app = express().use(cors()).use(express.json()); //Crea al servidor
 const port = process.env.PORT || 20202; //Puerto donde abriremos el servicio
 
+app.use(cors({ origin: "*" }));
+
 //Ruta GET / para saber si el servicio está corriendo
 app.get("/", (req, res) => {
   res.status(200).json({
