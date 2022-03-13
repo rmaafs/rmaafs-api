@@ -31,10 +31,10 @@ router.get("/", async (req, res) => {
   });
 });
 
-router.get("/current-track", async (req, res) => {
-  const track = await sp.getCurrentTrack();
-
-  res.status(200).json(track);
+router.get("/current-track", (req, res) => {
+  sp.getCurrentTrack()
+    .then((track) => res.status(200).json(track))
+    .catch((err) => res.status(500).json({ err: err }));
 });
 
 router.get("/search", async (req, res) => {
