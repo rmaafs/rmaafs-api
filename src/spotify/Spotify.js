@@ -73,8 +73,6 @@ class Spotify {
           //Si la respuesta no contiene la información del track...
           if (!data.item) reject("No se pudo recuperar el current track");
 
-          console.log(data.item.album);
-
           const progress = data.progress_ms; //En qué segundo va la canción
           const isPlaying = data.is_playing; //¿Está reproduciendo?
 
