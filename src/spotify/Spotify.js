@@ -125,7 +125,7 @@ class Spotify {
 
       //Si una IP ya ha solicitado poner una canción
       if (this.queued[fecha].includes(ip)) {
-        resolve({ error: "Sólo puedes añadir 1 canción por día." });
+        resolve({ error: "You can only recommend 1 song per day." });
         return;
       }
 
