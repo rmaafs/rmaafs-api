@@ -73,6 +73,8 @@ class Spotify {
           //Si la respuesta no contiene la información del track...
           if (!data.item) reject("No se pudo recuperar el current track");
 
+          console.log(data.item.album);
+
           const progress = data.progress_ms; //En qué segundo va la canción
           const isPlaying = data.is_playing; //¿Está reproduciendo?
 
@@ -82,7 +84,7 @@ class Spotify {
           const id = item.id; //ID de la canción
           const name = item.name; //Nombre de la canción
           const artista = item.artists[0].name; //Solo mostrar el primer artista
-          const image = item.album.images[0];
+          const image = item.album.images[item.album.images.length - 1];
 
           //Preparamos el objeto de respuesta
           const respuesta = {
@@ -173,7 +175,7 @@ class Spotify {
             const id = item.id; //ID de la canción
             const name = item.name; //Nombre de la canción
             const artista = item.artists[0].name; //Solo mostrar el primer artista
-            const image = item.album.images[0];
+            const image = item.album.images[item.album.images.length - 1];
 
             //Preparamos el objeto de respuesta
             const respuesta = {
