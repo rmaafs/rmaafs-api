@@ -1,6 +1,8 @@
 import express from "express";
+import Heart from "./heart";
 
 const router = express.Router();
+const heart = new Heart();
 
 router.get("/", async (req, res) => {
   res.status(200).json({
@@ -18,7 +20,8 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/heart", async (req, res) => {
-  res.status(200).json({ msg: "ok" });
+  const rate = await heart.getLastRate();
+  res.status(200).json(rate);
 });
 
 module.exports = router;
