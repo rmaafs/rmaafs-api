@@ -31,6 +31,10 @@ app.get("/", (req, res) => {
         url: "/push",
         info: "Mandar notificaciones push en tiempo real a mi celular.",
       },
+      {
+        url: "/fitness",
+        info: "Rutas para Google Fitness (Conectar MiBand).",
+      },
     ],
   });
 });
@@ -46,6 +50,9 @@ app.use("/enchufe", require("./src/tuya/enchufe"));
 
 //Rutas para mandar mensajes PUSH a mi celular
 app.use("/push", require("./src/push/android"));
+
+//Rutas para Google Fitness (Conectar MiBand)
+app.use("/fitness", require("./src/google_fitness"));
 
 app.listen(port, () => {
   console.log("Escuchando en el puerto " + port);
