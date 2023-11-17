@@ -4,5 +4,12 @@ services:
     image: rmaafs/rmaafs-api:latest
     ports:
       - "20202:20202"
+    environment:
+      VIRTUAL_HOST: api.rmaafs.com
     env_file: /root/.env/rmaafs-api/secrets.env
     restart: always
+
+networks:
+  default:
+    name: nginx-proxy
+    external: true
