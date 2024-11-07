@@ -5,6 +5,8 @@ const GOOGLE_REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
+const RATE_NOT_FOUND_MSG = "Rate not found";
+
 /**
  * Clase para obtener datos de mi frecuencia cardiaca en tiempo real
  */
@@ -64,10 +66,32 @@ export default class Heart {
    */
   async getLastRate() {
     await this.refreshToken();
+    let timeLapsed = 10800 * 1000; // 3h
 
+    return new Promise(async (resolve, reject) => {
+      while (true) {
+        if (timeLapsed > 86400000) {
+          reject("Rate not found");
+        }
+
+        try {
+          const hearthData = await this.sendFitnessRequest(timeLapsed);
+          return resolve(hearthData);
+        } catch (err) {
+          if (err === RATE_NOT_FOUND_MSG) {
+            timeLapsed *= 2;
+          } else {
+            return reject(err);
+          }
+        }
+      }
+    });
+  }
+
+  async sendFitnessRequest(timeLapsed) {
     const dataSource =
       "derived:com.google.heart_rate.bpm:com.google.android.gms:merge_heart_rate_bpm";
-    const startDate = Date.now() - 86400 * 1000 + "000000";
+    const startDate = Date.now() - timeLapsed + "000000";
     const endDate = Date.now() + "000000";
 
     return new Promise((resolve, reject) => {
@@ -90,7 +114,7 @@ export default class Heart {
           if (data.point && data.point.length > 0) {
             const rate = data.point[data.point.length - 1];
             if (rate.value === undefined || rate.value.length === 0) {
-              return reject("Rate not found");
+              return reject(RATE_NOT_FOUND_MSG);
             }
 
             const response = {
@@ -99,7 +123,7 @@ export default class Heart {
             };
             resolve(response);
           } else {
-            reject("Rate not found");
+            return reject(RATE_NOT_FOUND_MSG);
           }
         })
         .catch((err) => {
