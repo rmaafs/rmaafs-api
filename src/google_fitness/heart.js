@@ -68,12 +68,9 @@ export default class Heart {
     await this.refreshToken();
     let timeLapsed = 10800 * 1000; // 3h
 
+    /* eslint-disable no-async-promise-executor */
     return new Promise(async (resolve, reject) => {
-      while (true) {
-        if (timeLapsed > 86400000) {
-          reject("Rate not found");
-        }
-
+      while (timeLapsed < 86400000) {
         try {
           const hearthData = await this.sendFitnessRequest(timeLapsed);
           return resolve(hearthData);
@@ -85,6 +82,8 @@ export default class Heart {
           }
         }
       }
+
+      return reject("Rate not found");
     });
   }
 
