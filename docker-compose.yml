@@ -8,6 +8,8 @@ services:
       VIRTUAL_HOST: api.rmaafs.com
     env_file: /root/.env/rmaafs-api/secrets.env
     restart: always
+    volumes:
+      - ./data:/data
 
 networks:
   default:
