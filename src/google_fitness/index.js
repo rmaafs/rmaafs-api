@@ -20,8 +20,13 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/heart", async (req, res) => {
-  const rate = await heart.getLastRate();
-  res.status(200).json(rate);
+  try {
+    const rate = await heart.getLastRate();
+    res.status(200).json(rate);
+  } catch (ex) {
+    console.log(ex);
+    res.status(400).json({ error: ex });
+  }
 });
 
 module.exports = router;

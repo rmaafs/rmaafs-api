@@ -70,7 +70,7 @@ export default class Heart {
 
     /* eslint-disable no-async-promise-executor */
     return new Promise(async (resolve, reject) => {
-      while (timeLapsed < 86400000) {
+      while (timeLapsed <= 86400000) {
         try {
           const hearthData = await this.sendFitnessRequest(timeLapsed);
           return resolve(hearthData);
