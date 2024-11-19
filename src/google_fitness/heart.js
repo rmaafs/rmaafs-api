@@ -78,7 +78,7 @@ export default class Heart {
           if (err === RATE_NOT_FOUND_MSG) {
             timeLapsed *= 2;
           } else {
-            return reject(err);
+            return reject("Error getting heart rate.");
           }
         }
       }
