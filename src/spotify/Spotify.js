@@ -136,13 +136,18 @@ export default class Spotify {
           Authorization: "Bearer " + this.access_token,
         },
       })
-        .then(({ data }) => {
+        .then(async ({ data }) => {
           if (data === "") {
             return resolve({ error: "No se pudo añadir la canción." });
           }
 
           this.queued[fecha].push(ip);
-          new PushAndroid().enviar("Canción recomendada", idTrack + ": " + ip);
+          const songName = await this.getTrackNameById(idTrack);
+          new PushAndroid().enviar(
+            "Canción recomendada",
+            `${songName} (${ip})`
+          );
+
           return resolve({ status: "ok" });
         })
         .catch((err) => {
@@ -186,6 +191,31 @@ export default class Spotify {
             resolve(respuesta);
           } else {
             resolve({ error: "No se encontró la canción" });
+          }
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  async getTrackNameById(trackId) {
+    await this.refreshToken();
+    return new Promise((resolve, reject) => {
+      axios({
+        method: "GET",
+        url: `${this.API_URL}/tracks/${trackId}`,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.access_token,
+        },
+      })
+        .then(({ data }) => {
+          if (data && data.name) {
+            resolve(data.name); // Solo retorna el nombre de la canción
+          } else {
+            resolve(null); // No se encontró la canción
           }
         })
         .catch((err) => {
