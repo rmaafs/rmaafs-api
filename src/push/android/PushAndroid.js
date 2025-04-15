@@ -10,12 +10,14 @@ export default class PushAndroid {
   constructor(token) {
     this.token = token || process.env.PUSH_TOKEN;
 
-    // Inicializamos firebase admin
-    admin.initializeApp({
-      credential: admin.credential.cert(
-        process.env.GOOGLE_APPLICATION_CREDENTIALS
-      ),
-    });
+    // Solo inicializa si no hay apps inicializadas
+    if (!admin.apps.length) {
+      admin.initializeApp({
+        credential: admin.credential.cert(
+          process.env.GOOGLE_APPLICATION_CREDENTIALS
+        ),
+      });
+    }
   }
 
   /**

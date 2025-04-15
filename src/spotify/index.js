@@ -1,6 +1,6 @@
 const express = require("express");
+const { default: Spotify } = require("./Spotify");
 const router = express.Router();
-import { Spotify } from "./Spotify";
 
 const sp = new Spotify();
 
@@ -46,7 +46,7 @@ router.get("/search", async (req, res) => {
 
 router.post("/queue", async (req, res) => {
   let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
-  //CludFlare protege la IP, y adjunta la IP original con otra diferente.
+  //CloudFlare protege la IP, y adjunta la IP original con otra diferente.
   if (ip.includes(",")) {
     ip = ip.split(",")[0];
   }

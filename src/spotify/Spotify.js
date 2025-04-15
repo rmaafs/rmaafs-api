@@ -8,7 +8,7 @@ const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
 /**
  * Clase para la conexión a spotify
  */
-class Spotify {
+export default class Spotify {
   constructor() {
     this.API_URL = "https://api.spotify.com/v1";
     this.BASIC_AUTH = BASIC;
@@ -129,26 +129,29 @@ class Spotify {
 
       axios({
         method: "POST",
-        url: this.API_URL + "/me/player/queue?uri=spotify%3Atrack%3A" + idTrack,
+        url: `${this.API_URL}/me/player/queue?uri=spotify%3Atrack%3A${idTrack}`,
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
           Authorization: "Bearer " + this.access_token,
         },
       })
-        .then(({ data }) => {
+        .then(async ({ data }) => {
           if (data === "") {
-            this.queued[fecha].push(ip);
-            new PushAndroid().enviar(
-              "Canción recomendada",
-              idTrack + ": " + ip
-            );
-            resolve({ status: "ok" });
+            return resolve({ error: "No se pudo añadir la canción." });
           }
-          resolve({ error: "No se pudo añadir la canción." });
+
+          this.queued[fecha].push(ip);
+          const songName = await this.getTrackNameById(idTrack);
+          new PushAndroid().enviar(
+            "Canción recomendada",
+            `${songName} (${ip})`
+          );
+
+          return resolve({ status: "ok" });
         })
         .catch((err) => {
-          reject(err);
+          return reject(err);
         });
     });
   }
@@ -195,6 +198,29 @@ class Spotify {
         });
     });
   }
-}
 
-module.exports = { Spotify };
+  async getTrackNameById(trackId) {
+    await this.refreshToken();
+    return new Promise((resolve, reject) => {
+      axios({
+        method: "GET",
+        url: `${this.API_URL}/tracks/${trackId}`,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.access_token,
+        },
+      })
+        .then(({ data }) => {
+          if (data && data.name) {
+            resolve(data.name); // Solo retorna el nombre de la canción
+          } else {
+            resolve(null); // No se encontró la canción
+          }
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+}
