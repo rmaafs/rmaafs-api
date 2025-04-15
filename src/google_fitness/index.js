@@ -1,5 +1,5 @@
 import express from "express";
-import Heart from "./heart";
+import Heart from "../home_assistant/heart";
 
 const router = express.Router();
 const heart = new Heart();
