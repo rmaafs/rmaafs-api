@@ -2,3 +2,4 @@ node_modules
 credentials*
 build
 secrets.env
+.DS_Store
