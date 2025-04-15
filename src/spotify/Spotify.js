@@ -8,7 +8,7 @@ const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
 /**
  * Clase para la conexión a spotify
  */
-class Spotify {
+export default class Spotify {
   constructor() {
     this.API_URL = "https://api.spotify.com/v1";
     this.BASIC_AUTH = BASIC;
@@ -129,7 +129,7 @@ class Spotify {
 
       axios({
         method: "POST",
-        url: this.API_URL + "/me/player/queue?uri=spotify%3Atrack%3A" + idTrack,
+        url: `${this.API_URL}/me/player/queue?uri=spotify%3Atrack%3A${idTrack}`,
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -138,17 +138,15 @@ class Spotify {
       })
         .then(({ data }) => {
           if (data === "") {
-            this.queued[fecha].push(ip);
-            new PushAndroid().enviar(
-              "Canción recomendada",
-              idTrack + ": " + ip
-            );
-            resolve({ status: "ok" });
+            return resolve({ error: "No se pudo añadir la canción." });
           }
-          resolve({ error: "No se pudo añadir la canción." });
+
+          this.queued[fecha].push(ip);
+          new PushAndroid().enviar("Canción recomendada", idTrack + ": " + ip);
+          return resolve({ status: "ok" });
         })
         .catch((err) => {
-          reject(err);
+          return reject(err);
         });
     });
   }
@@ -196,5 +194,3 @@ class Spotify {
     });
   }
 }
-
-module.exports = { Spotify };
