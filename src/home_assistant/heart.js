@@ -42,7 +42,7 @@ export default class Heart {
           `Error getting sensor value:`,
           error.response?.data || error.message
         );
-        return reject(error);
+        return reject("Error getting sensor value.");
       }
     });
   }
