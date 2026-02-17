@@ -29,7 +29,11 @@ jobs:
       - name: 🏷 Get the version
         id: get_version
         run: |
-          echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+          else
+            echo ::set-output name=VERSION::latest
+          fi
 
       - name: ☁ Build and push
         id: docker_build
