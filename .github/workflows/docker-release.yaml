@@ -36,7 +36,5 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          platforms: linux/amd64,linux/arm64
-          tags: |
-            rmaafs/rmaafs-api:${{ steps.get_version.outputs.VERSION }}
-            rmaafs/rmaafs-api:latest
+          platforms: linux/amd64,linux/arm64,linux/arm64/v8
+          tags: rmaafs/rmaafs-api:${{ steps.get_version.outputs.VERSION }}
