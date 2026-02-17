@@ -1,8 +1,10 @@
-FROM node:14.18-alpine3.12
+FROM node:18-alpine
 
 WORKDIR /app
 
+COPY package*.json ./
+RUN npm ci --only=production
+
 COPY . .
-RUN npm install
 
 CMD ["npm", "start"]
